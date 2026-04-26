@@ -75,7 +75,8 @@ install_arch() {
 # install packages on Ubuntu
 install_ubuntu() {
     echo "[*] Detected Ubuntu. Using apt to install packages."
-    sudo apt update && sudo apt install -y "$@"
+    sudo apt update && sudo apt upgrade -y
+	echo '[!] Support will be added soon!'
 }
 
 # install packages on Fedora
