@@ -50,11 +50,11 @@ install_arch() {
 
     if [ "$install_all_packages" = "true" ]; then
         # install yay programs
-        yay -Syu && yay -S --noconfirm minecraft-launcher onlyoffice-bin
+        yay -Syu --noconfirm && yay -S --noconfirm minecraft-launcher onlyoffice-bin
     fi
 
     # official repo
-    sudo pacman -Sy jre-openjdk texlive-basic texlive-bibtexextra texlive-binextra texlive-context texlive-fontsextra texlive-fontsrecommended texlive-fontutils texlive-formatsextra texlive-humanities texlive-latex texlive-latexextra texlive-latexrecommended texlive-luatex texlive-mathscience texlive-pictures texlive-publishers texlive-xetex texstudio biber flatpak baobab gnome-disk-utility obs-studio steam strawberry signal-desktop discord clamav clamtk firejail usbguard pavucontrol audacity handbrake btop code nginx keepassxc plasma-vault gimp digikam qemu-full libvirt virt-manager dnsmasq ebtables edk2-ovmf bubblewrap nsjail rkhunter arpwatch veracrypt kleopatra nftables torbrowser-launcher apparmor proton-vpn-gtk-app inkscape wireshark-qt nmap bleachbit sbctl discover nextcloud-client spotify-launcher k3b picard htop iftop atop bettercap hashcat kdenlive thunderbird qbittorrent firetools kdiskmark aircrack-ng blender homebank rpm vlc mediathekview magic-wormhole aspell hunspell hunspell-en_gb hunspell-de hunspell-en_gb aspell-en aspell-de texlive-langgerman texlive-langeuropean texlive-langfrench texlive-langcyrillic qrca krfb cdrtools cdrdao dvd+rw-tools msmtp-mta cronie
+    sudo pacman -Sy --noconfirm jre-openjdk texlive-basic texlive-bibtexextra texlive-binextra texlive-context texlive-fontsextra texlive-fontsrecommended texlive-fontutils texlive-formatsextra texlive-humanities texlive-latex texlive-latexextra texlive-latexrecommended texlive-luatex texlive-mathscience texlive-pictures texlive-publishers texlive-xetex texstudio biber flatpak baobab gnome-disk-utility obs-studio steam strawberry signal-desktop discord clamav clamtk firejail usbguard pavucontrol audacity handbrake btop code nginx keepassxc plasma-vault gimp digikam qemu-full libvirt virt-manager dnsmasq ebtables edk2-ovmf bubblewrap nsjail rkhunter arpwatch veracrypt kleopatra nftables torbrowser-launcher apparmor proton-vpn-gtk-app inkscape wireshark-qt nmap bleachbit sbctl discover nextcloud-client spotify-launcher k3b picard htop iftop atop bettercap hashcat kdenlive thunderbird qbittorrent firetools kdiskmark aircrack-ng blender homebank rpm vlc mediathekview magic-wormhole aspell hunspell hunspell-en_gb hunspell-de hunspell-en_gb aspell-en aspell-de texlive-langgerman texlive-langeuropean texlive-langfrench texlive-langcyrillic qrca krfb cdrtools cdrdao dvd+rw-tools msmtp-mta cronie
 
     if [ "$intel" = "true" ]; then
 	# install intel firmware
@@ -67,24 +67,25 @@ install_arch() {
 
     if [ "$nvidia" = "true" ]; then
 	echo '[!] When using arch it is important to select the nvidia version when booting up the installer, minor modifications are now being made in this regard.'
-	sudo pacman -Sy nvidia-utils cuda
+	sudo pacman -Sy --noconfirm nvidia-utils cuda
     fi
-
 }
 
 # install packages on Ubuntu
 install_ubuntu() {
     echo "[*] Detected Ubuntu. Using apt to install packages."
     sudo apt update && sudo apt upgrade -y
+	clear
 	echo '[!] Support will be added soon!'
 }
 
 # install packages on Fedora
 install_fedora() {
     # echo "Detected Fedora. Using dnf to install packages."
-    # sudo dnf install -y texlive texstudio biber flatpak baobab gnome-disk-utility obs-studio steam strawberry signal-desktop discord clamav clamtk firejail usbguard pavucontrol audacity handbrake btop code nginx keepassxc plasma-vault gimp digikam qemu-full libvirt virt-manager dnsmasq ebtables edk2-ovmf bubblewrap nsjail rkhunter arpwatch veracrypt kleopatra nftables torbrowser-launcher apparmor proton-vpn-gtk-app inkscape wireshark-qt nmap bleachbit sbctl discover nextcloud-client spotify-launcher k3b picard htop iftop atop bettercap hashcat kdenlive thunderbird qbittorrent firetools intel-media-driver linux-firmware-intel intel-compute-runtime xf86-video-intel kdiskmark aircrack-ng blender homebank rpm vlc mediathekview magic-wormhole aspell hunspell hunspell-en_gb hunspell-de hunspell-en_gb aspell-en aspell-de texlive-langgerman texlive-langeuropean texlive-langfrench texlive-langcyrillic qrca krfb
-    # echo '[!] The following packages are not supported - manual intervention required: signal-desktop discord handbrake code nsjail veracrypt apparmor proton-vpn-gtk-app wireshark-qt sbctl discover spotify-launcher bettercap firetools intel-media-driver linux-firmware-intel xf86-video-intel mediathekview magic-wormhole hunspell-en_gb texlive-langgerman texlive-langeuropean texlive-langfrench texlive-langcyrillic'
-	echo '[!] Support will be added soon!'
+    sudo dnf install -y --skip-unavailable texlive texstudio biber flatpak baobab gnome-disk-utility obs-studio strawberry clamav clamtk firejail usbguard pavucontrol audacity btop nginx keepassxc plasma-vault gimp digikam qemu libvirt virt-manager dnsmasq ebtables edk2-ovmf bubblewrap rkhunter arpwatch kleopatra nftables torbrowser-launcher inkscape nmap bleachbit nextcloud-client k3b picard htop iftop atop hashcat kdenlive thunderbird qbittorrent kdiskmark aircrack-ng blender homebank rpm vlc aspell hunspell hunspell-de aspell-en aspell-de qrca krfb
+	clear
+    echo '[!] The following packages are not supported - manual intervention required: steam signal-desktop discord handbrake code nsjail veracrypt apparmor proton-vpn-gtk-app wireshark-qt discover spotify-launcher bettercap firetools intel-media-driver linux-firmware-intel xf86-video-intel mediathekview magic-wormhole hunspell-en_gb texlive-langgerman texlive-langeuropean texlive-langfrench texlive-langcyrillic'
+	# echo '[!] Support will be added soon!'
 }
 
 # _________________________________________________________________________________
