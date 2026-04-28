@@ -57,17 +57,17 @@ install_arch() {
     sudo pacman -Sy --noconfirm jre-openjdk texlive-basic texlive-bibtexextra texlive-binextra texlive-context texlive-fontsextra texlive-fontsrecommended texlive-fontutils texlive-formatsextra texlive-humanities texlive-latex texlive-latexextra texlive-latexrecommended texlive-luatex texlive-mathscience texlive-pictures texlive-publishers texlive-xetex texstudio biber flatpak baobab gnome-disk-utility obs-studio steam strawberry signal-desktop discord clamav clamtk firejail usbguard pavucontrol audacity handbrake btop code nginx keepassxc plasma-vault gimp digikam qemu-full libvirt virt-manager dnsmasq ebtables edk2-ovmf bubblewrap nsjail rkhunter arpwatch veracrypt kleopatra nftables torbrowser-launcher apparmor proton-vpn-gtk-app inkscape wireshark-qt nmap bleachbit sbctl discover nextcloud-client spotify-launcher k3b picard htop iftop atop bettercap hashcat kdenlive thunderbird qbittorrent firetools kdiskmark aircrack-ng blender homebank rpm vlc mediathekview magic-wormhole aspell hunspell hunspell-en_gb hunspell-de hunspell-en_gb aspell-en aspell-de texlive-langgerman texlive-langeuropean texlive-langfrench texlive-langcyrillic qrca krfb cdrtools cdrdao dvd+rw-tools msmtp-mta cronie
 
     if [ "$intel" = "true" ]; then
-	# install intel firmware
-	sudo pacman -S --noconfirm intel-media-driver linux-firmware-intel intel-compute-runtime xf86-video-intel
+		# install intel firmware
+		sudo pacman -S --noconfirm intel-media-driver linux-firmware-intel intel-compute-runtime xf86-video-intel
     fi
 
     if [ "$amd" = "true" ]; then
-	echo '[!] Sadly, AMD is not yet supported in this script, no further modifications are being made in this regard..'
+		echo '[!] Sadly, AMD is not yet supported in this script, no further modifications are being made in this regard..'
     fi
 
     if [ "$nvidia" = "true" ]; then
-	echo '[!] When using arch it is important to select the nvidia version when booting up the installer, minor modifications are now being made in this regard.'
-	sudo pacman -Sy --noconfirm nvidia-utils cuda
+		echo '[!] When using arch it is important to select the nvidia version when booting up the installer, minor modifications are now being made in this regard.'
+		sudo pacman -Sy --noconfirm nvidia-utils cuda
     fi
 }
 
@@ -108,6 +108,7 @@ if [ "$intel" = "false" ]; then
 		if [ "$arm" = "false" ]; then
 		ask_yes_no "Are you using an RISC-V CPU?" riscv
 		fi
+	fi
 fi
 
 if [[ "$intel" = "false" && "$amd" = "false" && "$arm" = "false" && "$riscv" = "false" ]]; then
@@ -175,14 +176,14 @@ if [ "$DISTRO" != "unsupported" ]; then
     fi
 
     if [ "$tailscale" = "true" ]; then
-	echo '[+] Installing tailscale'
-	curl -fsSL https://tailscale.com/install.sh | sh
-	sudo tailscale up
+		echo '[+] Installing tailscale'
+		curl -fsSL https://tailscale.com/install.sh | sh
+		sudo tailscale up
     fi
 
     if [ "$bluetooth" = "true" ]; then
-	echo '[+] Enabling bluetooth...'
-	sudo systemctl enable --now bluetooth
+		echo '[+] Enabling bluetooth...'
+		sudo systemctl enable --now bluetooth
     fi 
 
 else
