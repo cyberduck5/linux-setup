@@ -100,8 +100,36 @@ ask_yes_no "Do you want to install packages from non official repositories?" ins
 ask_yes_no "Do you want to reboot the system once the setup is done?" automatic_reboot
 ask_yes_no "Do you want to enable usbguard?" usbguard
 ask_yes_no "Are you using an Intel CPU?" intel
-ask_yes_no "Are you using an AMD CPU?" amd
+
+if [ "$intel" = "false" ]; then
+	ask_yes_no "Are you using an AMD CPU?" amd
+	if [ "$amd" = "false" ]; then
+		ask_yes_no "Are you using an ARM CPU?" arm
+		if [ "$arm" = "false" ]; then
+		ask_yes_no "Are you using an RISC-V CPU?" riscv
+		fi
+fi
+
+if [[ "$intel" = "false" && "$amd" = "false" && "$arm" = "false" && "$riscv" = "false" ]]; then
+	echo '[!] Your CPU is not yet supported - no further packages will be installed in this regard.'
+fi
+
+# -----------------
+if [[ "$amd" = "true" || "$arm" = "true" || "$riscv" = "true" ]]; then
+	echo '[!] Your CPU is not yet supported - no further packages will be installed in this regard.'
+fi
+# ------------------
+
 ask_yes_no "Are you using an NVIDIA GPU?" nvidia
+
+if [ "$nvidia" = "false" ]; then
+	ask_yes_no 'Are you using an AMD GPU?' amd_gpu
+fi
+
+if [ "$amd_gpu" = "true" ]; then
+	echo '[!] This GPU is not yet supported - no further packages will be installed in this regard.'
+fi
+
 ask_yes_no "Do you plan on using Tailscale?" tailscale
 ask_yes_no "Do you plan on using bluetooth on your device?" bluetooth
 
