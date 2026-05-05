@@ -1,0 +1,78 @@
+services:
+  broker:
+    image: docker.io/library/redis:7
+    restart: unless-stopped
+    volumes:
+      - .redisdata:/data
+
+  db:
+    image: docker.io/library/postgres:16
+    restart: unless-stopped
+    volumes:
+      - .pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless # change this
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+      - ./export:/usr/src/paperless/export
+      # change the usernames
+      - /home/youruser/Documents/Archiv:/usr/src/paperless/media/documents/archive/none 
+      - /home/youruser/Documents/Archiv/Add:/usr/src/paperless/consume/Add
+      
+    environment:
+      USER_ID: 1000
+      GROUP_ID: 1000
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBUSER: paperless
+      PAPERLESS_DBPASS: paperless
+      PAPERLESS_URL: https://127.0.0.1
+      PAPERLESS_CSRF_TRUSTED_ORIGINS: https://127.0.0.1
+      PAPERLESS_CORS_ALLOWED_ORIGINS: https://127.0.0.1
+      PAPERLESS_TASK_WORKERS: 5
+      PAPERLESS_THREADS_PER_WORKER: 1
+      PAPERLESS_WORKER_TIMEOUT: 1800
+      PAPERLESS_FILENAME_FORMAT: "{{ correspondent }}/{{ document_type }}/{{ created_year }}/{{ title }}"
+      PAPERLESS_CONSUMPTION_DIR: /usr/src/paperless/consume
+      PAPERLESS_CONSUMER_DELETE_DUPLICATES: "true"
+      PAPERLESS_CONSUMER_RECURSIVE: "true"
+      PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+      PAPERLESS_TIME_ZONE: Europe/Vienna
+      PAPERLESS_OCR_LANGUAGE: deu+eng
+      PAPERLESS_SECRET_KEY: "" # create this
+      PAPERLESS_ADMIN_USER: paperless
+      PAPERLESS_ADMIN_PASSWORD: paperless
+
+  stirling-pdf:
+    image: docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+    # change the username
+      - /home/yourusername/Documents/Archiv/Add:/consume
+      - ./stirling/trainingData:/usr/share/tessdata
+      - ./stirling/configs:/configs
+      - ./stirling/logs:/logs
+    environment:
+      DOCKER_ENABLE_SECURITY: "false"
+      INSTALL_BOOK_AND_ADVANCED_HTML_OPS: "false"
+      LANGS: "de_DE"
+      BASE_PATH: "/stirling"
+
+volumes:
+  pgdata:
+  redisdata:
