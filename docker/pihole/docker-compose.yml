@@ -1,0 +1,37 @@
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    networks:
+      pihole_net:
+        # add your ipv6 here
+        ipv6_address: ::1
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8081:443/tcp"
+      - "853:853/tcp"
+      
+    environment:
+      TZ: 'Europe/Vienna'
+      FTLCONF_webserver_api_password: '@yourpassword!1234'
+      FTLCONF_dns_listeningMode: 'ALL'
+      FTLCONF_webserver_tls_enabled: 'true'
+      # Edit these values to help pihole identify their ip addresses
+#      FTLCONF_LOCAL_IPV4: '' 
+#      FTLCONF_LOCAL_IPV6: ''
+    volumes:
+      - './etc-pihole:/etc/pihole'
+    cap_add:
+      - NET_ADMIN
+      - SYS_TIME
+      - SYS_NICE
+    restart: unless-stopped
+
+networks:
+  pihole_net:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16 # the docker subnet
+        - subnet: fd00:d0ca:1234::/64 # your defined ipv6 subnet
