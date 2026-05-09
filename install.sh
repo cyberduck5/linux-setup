@@ -84,7 +84,7 @@ install_fedora() {
     echo "[*] Detected Fedora. Using dnf to install packages."
 	sudo dnf upgrade -y && sudo flatpak update -y
     sudo dnf install -y --skip-unavailable libdnet texlive texstudio biber flatpak baobab gnome-disk-utility obs-studio strawberry clamav clamtk firejail usbguard pavucontrol audacity btop nginx keepassxc plasma-vault gimp digikam qemu libvirt virt-manager dnsmasq ebtables edk2-ovmf bubblewrap rkhunter arpwatch kleopatra nftables torbrowser-launcher inkscape nmap bleachbit nextcloud-client k3b picard htop iftop atop hashcat kdenlive thunderbird qbittorrent kdiskmark aircrack-ng blender homebank rpm vlc aspell hunspell hunspell-de aspell-en aspell-de qrca krfb snap plasma-discover-snap wireshark
-	sudo snap install spotify signal-desktop steam discord
+	sudo snap install spotify signal-desktop steam discord onlyoffice-desktopeditors
 	sudo flatpak install -y app/fr.handbrake.ghb/x86_64/stable app/com.protonvpn.www/x86_64/stable
 	clear
     echo '[!] The following packages are not supported - manual intervention required: code veracrypt bettercap firetools intel-media-driver linux-firmware-intel xf86-video-intel mediathekview magic-wormhole hunspell-en_gb texlive-langgerman texlive-langeuropean texlive-langfrench texlive-langcyrillic'
@@ -97,6 +97,11 @@ install_fedora() {
 # _________________________________________________________________________________
 
 ask_yes_no "Do you want to install packages from non official repositories?" install_all_packages
+
+if [ "install_all_packages" = "true" ]; then
+		sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+fi
+
 ask_yes_no "Do you want to reboot the system once the setup is done?" automatic_reboot
 ask_yes_no "Do you want to enable usbguard?" usbguard
 ask_yes_no "Are you using an Intel CPU?" intel
@@ -158,10 +163,6 @@ if [ "$DISTRO" != "unsupported" ]; then
 
     # enabling qemu virtualisation support and enabling the service as well as the anti-virus clamav
     sudo usermod -aG libvirt $(whoami) && sudo systemctl enable --now libvirtd clamav-daemon && sudo freshclam
-
-	if [ "install_all_packages" = "true" ]; then
-		sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-	fi
 
     # Enable usbguard if requested
     if [ "$usbguard" = "true" ]; then
