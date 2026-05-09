@@ -159,7 +159,7 @@ if [ "$DISTRO" != "unsupported" ]; then
     # enabling qemu virtualisation support and enabling the service as well as the anti-virus clamav
     sudo usermod -aG libvirt $(whoami) && sudo systemctl enable --now libvirtd clamav-daemon && sudo freshclam
 
-	if [ "install_all_packages" = "true" ]
+	if [ "install_all_packages" = "true" ]; then
 		sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 	fi
 
