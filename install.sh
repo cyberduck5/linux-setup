@@ -58,7 +58,7 @@ install_arch() {
 
     if [ "$intel" = "true" ]; then
 		# install intel firmware
-		sudo pacman -S --noconfirm intel-media-driver linux-firmware-intel intel-compute-runtime xf86-video-intel
+		sudo pacman -S --noconfirm mesa vulkan-intel intel-media-driver libva-utils lib32-mesa lib32-vulkan-intel intel-compute-runtime
     fi
 
     if [ "$amd" = "true" ]; then
